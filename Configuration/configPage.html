@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Lyrics Styler</title>
+</head>
+<body>
+    <div id="LyricsStylerConfigPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-input,emby-button,emby-select,emby-checkbox">
+        <div data-role="content">
+            <div class="content-primary">
+                <form id="LyricsStylerConfigForm">
+                    <div class="selectContainer">
+                        <label class="selectLabel" for="Options">Lyrics Style</label>
+                        <select is="emby-select" id="Options" name="Options" class="emby-select-withcolor emby-select">
+                            <option value="Default">Default</option>
+                        </select>
+                    </div>
+
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label class="emby-checkbox-label">
+                            <input id="EnableStyling" name="EnableStyling" type="checkbox" is="emby-checkbox" />
+                            <span>Enable Lyrics Styling</span>
+                        </label>
+                    </div>
+
+                    <div>
+                        <button is="emby-button" type="submit" class="raised button-submit block emby-button">
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            const pluginId = '9656b96b-cdec-4e42-8f81-9c7252cd8728';
+
+            document.querySelector('#LyricsStylerConfigPage')
+                .addEventListener('pageshow', function () {
+                    Dashboard.showLoadingMsg();
+                    ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                        document.querySelector('#Options').value = config.Options || 'Default';
+                        document.querySelector('#EnableStyling').checked = config.EnableStyling || false;
+                        Dashboard.hideLoadingMsg();
+                    });
+                });
+
+            document.querySelector('#LyricsStylerConfigForm')
+                .addEventListener('submit', function (e) {
+                    Dashboard.showLoadingMsg();
+                    ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                        config.Options = document.querySelector('#Options').value;
+                        config.EnableStyling = document.querySelector('#EnableStyling').checked;
+                        ApiClient.updatePluginConfiguration(pluginId, config).then(function (result) {
+                            Dashboard.processPluginConfigurationUpdateResult(result);
+                        });
+                    });
+                    e.preventDefault();
+                    return false;
+                });
+
+        </script>
+    </div>
+</body>
+</html>

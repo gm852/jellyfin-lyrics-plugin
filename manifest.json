@@ -1,0 +1,22 @@
+[
+    {
+        "guid": "9656b96b-cdec-4e42-8f81-9c7252cd8728",
+        "name": "LyricsStyler",
+        "Version": "1.0.0.0",
+        "description": "Lyrics Styler plugin allows you to style your lyrics for music\n",
+        "overview": "Lyrics Styler for jellyfin",
+        "owner": "gm852",
+        "ImageUrl": "",
+        "category": "General",
+        "versions": [
+            {
+                "version": "1.0.0.0",
+                "changelog": "First general release",
+                "targetAbi": "10.8.0.0",
+                "sourceUrl": "",
+                "checksum": "",
+                "timestamp": ""
+            }
+        ]
+    }
+]
