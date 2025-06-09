@@ -6,7 +6,7 @@
         "description": "Lyrics Styler plugin allows you to style your lyrics for music\n",
         "overview": "Lyrics Styler for jellyfin",
         "owner": "gm852",
-        "ImageUrl": "https://github.com/gm852/jellyfin-lyrics-plugin/blob/25cf65290ff19cc59742b92018d3f3e0c3094f1b/Configuration/logo.png?raw=true",
+        "imageUrl": "https://github.com/gm852/jellyfin-lyrics-plugin/blob/25cf65290ff19cc59742b92018d3f3e0c3094f1b/Configuration/logo.png?raw=true",
         "category": "General",
         "versions": [
             {
