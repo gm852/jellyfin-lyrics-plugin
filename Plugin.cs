@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
+using ICU4N.Logging;
 using Jellyfin.Plugin.LyricsStyler.Configuration;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
@@ -33,6 +34,9 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
         Instance = this;
         _logger = logger;
 
+        if (!Configuration.EnableStyling)
+            return;
+
         if (string.IsNullOrWhiteSpace(applicationPaths.WebPath))
             return;
 
@@ -62,7 +66,7 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
         // Don't run if script already exists
         string scriptReplace = "<script plugin=\"LyricsStyler\".*?></script>";
         string scriptSrc = $"{basePath}/web/configurationpage?name=LyricsStylerScript.js";
-        string scriptElement = $"<script plugin=\"LyricsStyler\" version=\"1.3.1.0\" src=\"{scriptSrc}\"></script>";
+        string scriptElement = $"<script plugin=\"LyricsStyler\" version=\"1.0.0.0\" src=\"{scriptSrc}\"></script>";
 
         if (!indexContents.Contains(scriptElement))
         {
