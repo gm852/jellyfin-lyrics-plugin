@@ -13,9 +13,9 @@
                 "version": "1.0.0.0",
                 "changelog": "First general release",
                 "targetAbi": "10.8.0.0",
-                "sourceUrl": "",
-                "checksum": "",
-                "timestamp": ""
+                "sourceUrl": "https://github.com/gm852/jellyfin-lyrics-plugin/releases/download/Latest/Jellyfin.Plugin.LyricsStyler.zip",
+                "checksum": "796add682069702e782a2e0c04a9a3140b53219251de0d5a119bd7574853987d",
+                "timestamp": "2025-06-09 02:49:39"
             }
         ]
     }
