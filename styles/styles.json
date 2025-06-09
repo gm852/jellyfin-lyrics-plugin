@@ -1,0 +1,30 @@
+[
+    {
+        "name": "default",
+        "description": "Default style.",
+        "defaultCss": "",
+        "font": "default",
+        "previews": [
+            {
+                "type": "WithAlbumArt",
+                "device": "desktop",
+                "url": "https://raw.githubusercontent.com/gm852/jellyfin-lyrics-plugin/main/styles/default/lyricsStylerDesktopWithArt.png"
+            },
+            {
+                "type": "NoAlbumArt",
+                "device": "desktop",
+                "url": "https://raw.githubusercontent.com/gm852/jellyfin-lyrics-plugin/main/styles/default/lyricsStylerDesktopNoArt.png"
+            },
+            {
+                "type": "WithAlbumArt",
+                "device": "mobile",
+                "url": "https://raw.githubusercontent.com/gm852/jellyfin-lyrics-plugin/main/styles/default/lyricsStylerMobileWithArt.png"
+            },
+            {
+                "type": "NoAlbumArt",
+                "device": "mobile",
+                "url": "https://raw.githubusercontent.com/gm852/jellyfin-lyrics-plugin/main/styles/default/lyricsStylerMobileNoArt.png"
+            }
+        ]
+    }
+]

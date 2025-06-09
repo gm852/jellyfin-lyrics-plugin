@@ -22,6 +22,7 @@
                             <span>Enable Lyrics Styling</span>
                         </label>
                     </div>
+                    <div id="StylePreviewContainer" style="margin-top: 1em;"></div>
 
                     <div>
                         <button is="emby-button" type="submit" class="raised button-submit block emby-button">
@@ -34,32 +35,81 @@
 
         <script type="text/javascript">
             const pluginId = '9656b96b-cdec-4e42-8f81-9c7252cd8728';
+            const styleJsonUrl = 'https://raw.githubusercontent.com/gm852/jellyfin-lyrics-plugin/main/styles/styles.json';
 
-            document.querySelector('#LyricsStylerConfigPage')
-                .addEventListener('pageshow', function () {
-                    Dashboard.showLoadingMsg();
-                    ApiClient.getPluginConfiguration(pluginId).then(function (config) {
-                        document.querySelector('#Options').value = config.Options || 'Default';
-                        document.querySelector('#EnableStyling').checked = config.EnableStyling || false;
-                        Dashboard.hideLoadingMsg();
+            let styleData = [];
+
+            async function loadStyles() {
+                const res = await fetch(styleJsonUrl);
+                styleData = await res.json();
+                const optionsSelect = document.querySelector('#Options');
+                optionsSelect.innerHTML = '';
+
+                styleData.forEach(style => {
+                    const opt = document.createElement('option');
+                    opt.value = style.name;
+                    opt.textContent = style.name;
+                    optionsSelect.appendChild(opt);
+                });
+            }
+
+            function updatePreview(selectedStyle) {
+                const container = document.querySelector('#StylePreviewContainer');
+                container.innerHTML = '';
+
+                const style = styleData.find(s => s.name === selectedStyle);
+                if (!style) return;
+
+                const title = document.createElement('h3');
+                title.textContent = style.description || style.name;
+                container.appendChild(title);
+
+                style.previews.forEach(preview => {
+                    const label = document.createElement('p');
+                    label.textContent = `${preview.device} - ${preview.type}`;
+                    container.appendChild(label);
+
+                    const img = document.createElement('img');
+                    img.src = preview.url;
+                    img.alt = `${preview.device} ${preview.type}`;
+                    img.style.maxWidth = '300px';
+                    img.style.marginBottom = '1em';
+                    container.appendChild(img);
+                });
+            }
+
+            document.querySelector('#LyricsStylerConfigPage').addEventListener('pageshow', async function () {
+                Dashboard.showLoadingMsg();
+                await loadStyles();
+                const config = await ApiClient.getPluginConfiguration(pluginId);
+
+                document.querySelector('#Options').value = config.Options || 'Default';
+                document.querySelector('#EnableStyling').checked = config.EnableStyling || false;
+                updatePreview(config.Options || 'Default');
+
+                Dashboard.hideLoadingMsg();
+            });
+
+            document.querySelector('#Options').addEventListener('change', function () {
+                const selected = this.value;
+                updatePreview(selected);
+            });
+
+            document.querySelector('#LyricsStylerConfigForm').addEventListener('submit', function (e) {
+                Dashboard.showLoadingMsg();
+                ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                    config.Options = document.querySelector('#Options').value;
+                    config.EnableStyling = document.querySelector('#EnableStyling').checked;
+
+                    ApiClient.updatePluginConfiguration(pluginId, config).then(function (result) {
+                        Dashboard.processPluginConfigurationUpdateResult(result);
                     });
                 });
-
-            document.querySelector('#LyricsStylerConfigForm')
-                .addEventListener('submit', function (e) {
-                    Dashboard.showLoadingMsg();
-                    ApiClient.getPluginConfiguration(pluginId).then(function (config) {
-                        config.Options = document.querySelector('#Options').value;
-                        config.EnableStyling = document.querySelector('#EnableStyling').checked;
-                        ApiClient.updatePluginConfiguration(pluginId, config).then(function (result) {
-                            Dashboard.processPluginConfigurationUpdateResult(result);
-                        });
-                    });
-                    e.preventDefault();
-                    return false;
-                });
-
+                e.preventDefault();
+                return false;
+            });
         </script>
+
     </div>
 </body>
 </html>
